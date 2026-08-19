@@ -12,15 +12,19 @@
 #let display-font = ("Goudy Mediaeval", "Manufacturing Consent")
 
 // Zebra-striped rules table: horizontal rules only, small-caps bold
-// header row, alternating grey data rows.
+// header row, alternating grey data rows. Kept on one page by default;
+// pass breakable: true for tables taller than a page (the header row
+// repeats after the break).
 #let codex-table(
   columns: 1,
   align: center,
   header: (),
+  breakable: false,
   ..cells,
 ) = block(
   above: 1em,
   below: 1em,
+  breakable: breakable,
   table(
     columns: columns,
     align: align,
@@ -123,16 +127,19 @@
   show heading.where(level: 1): it => block(
     above: 1.5em,
     below: 0.9em,
+    sticky: true,
     text(font: display-font, weight: "regular", size: 19pt, it.body),
   )
   show heading.where(level: 2): it => block(
     above: 1.3em,
     below: 0.55em,
+    sticky: true,
     text(size: 11pt, weight: "bold", tracking: 0.8pt, it.body),
   )
   show heading.where(level: 3): it => block(
     above: 1.1em,
     below: 0.4em,
+    sticky: true,
     text(size: 10pt, weight: "bold", style: "italic", it.body),
   )
 
