@@ -54,12 +54,12 @@
     #text(font: display-font, size: 68pt, title)
 
     #if tagline != none {
-      v(-0.4em)
+      v(-4.0em)
       text(size: 11pt, style: "italic", tagline)
     }
 
     #if subtitle != none {
-      v(0.1em)
+      v(-0.8em)
       text(font: display-font, size: 26pt, subtitle)
     }
 
