@@ -1,0 +1,7 @@
+[package]
+name = "mace"
+version = "0.1.0"
+entrypoint = "mace.typ"
+authors = ["Justin Hamilton"]
+license = "LGPL-3.0-or-later"
+description = "Template emulating the style of the MACE Adventurer's Codex"
