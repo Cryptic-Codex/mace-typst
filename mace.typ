@@ -19,25 +19,52 @@
   columns: 1,
   align: center,
   header: (),
+  note: none,
   breakable: false,
   ..cells,
-) = block(
-  above: 1em,
-  below: 1em,
-  breakable: breakable,
-  table(
-    columns: columns,
-    align: align,
-    stroke: none,
-    inset: (x: 6pt, y: 3.5pt),
-    fill: (x, y) => if calc.odd(y) { luma(239) },
-    table.hline(stroke: 1pt),
-    table.header(..header.map(h => smallcaps(text(weight: "bold", h)))),
-    table.hline(stroke: 0.5pt),
-    ..cells,
-    table.hline(stroke: 0.8pt),
-  ),
-)
+) = {
+  let ncols = if type(columns) == int { columns } else { columns.len() }
+  block(
+    above: 1em,
+    below: 1em,
+    width: 100%,
+    breakable: breakable,
+    // Center tables narrower than the text column (all-auto columns);
+    // full-width tables are unaffected. std. prefix: the align *param*
+    // shadows the align function in this scope. Cells wrap ragged-right
+    // rather than justified.
+    {
+      set par(justify: false)
+      std.align(center, table(
+      columns: columns,
+      align: align,
+      stroke: none,
+      inset: (x: 6pt, y: 3.5pt),
+      fill: (x, y) => if calc.odd(y) { luma(239) },
+      table.hline(stroke: 1pt),
+      table.header(..header.map(h => smallcaps(text(weight: "bold", h)))),
+      table.hline(stroke: 0.5pt),
+      ..cells,
+      table.hline(stroke: 0.8pt),
+      // Footnote-style line under the bottom rule, e.g. "* may not ..."
+      ..if note != none {
+        (table.cell(
+          colspan: ncols,
+          fill: none,
+          align: center,
+          inset: (top: 2.5pt, bottom: 0pt),
+          text(size: 8pt, style: "italic", note),
+        ),)
+      },
+      ))
+    },
+  )
+}
+
+// Keep a run of content together on one page — wrap a heading plus its
+// paragraph and list when they must not split across a page break.
+// Don't wrap more than a page's worth of content: it would overflow.
+#let keep(body) = block(breakable: false, width: 100%, body)
 
 // Title page in the style of the codex cover: huge display title,
 // italic tagline, display subtitle, centered art, caps blurb,
